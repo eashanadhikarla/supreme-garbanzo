@@ -1,0 +1,6 @@
+.DS_Store
+*.ckpt
+
+test.ipynb
+.ipynb_checkpoints/
+
