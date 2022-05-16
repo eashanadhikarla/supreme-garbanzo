@@ -27,6 +27,8 @@ echo "You have selected Option: $option"
 echo ""
 echo ""
 
+cd main
+
 while [ "$option" != 7 ]
 do
 	echo "Enter the dataset (string as mentioned) for training {FB15k / WN18}: "
@@ -45,7 +47,7 @@ do
 	echo ""
 	echo ""
 
-	cd main
+	# cd main
 
 	echo $(pwd)
 	curr_pth=$(echo $(pwd) | sed -e "s/\/[^\/]*$//")
