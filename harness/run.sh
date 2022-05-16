@@ -21,13 +21,13 @@ echo "You have selected Option: $option"
 echo ""
 echo ""
 
-while ["$option" != 7];
+while [ "$option" != 7 ]
 do
 	echo "Enter the dataset for training {1 FB15k / 2 WN18}: "
 	read nd
-	if [["$nd" == 1]]; then
+	if [[ "$nd"==1 ]]; then
 		d="FB15k"
-	elif [["$nd == 2"]]; then
+	elif [[ "$nd"==2 ]]; then
 		d="WN18"
 	fi
 	
@@ -42,7 +42,7 @@ do
 	curr_pth=$(echo $(pwd) | sed -e "s/\/[^\/]*$//")
 	echo $curr_pth
 
-	if [[ "$option" == 1 ]]; then
+	if [[ "$option"==1 ]]; then
 		echo "Training TransE model, hang-tight ..."
 		# if [[ ! -e $dir ]]; then
 		# 	mkdir $dir
@@ -56,7 +56,7 @@ do
 		python3 transE.py -d $d -n $n
 		echo "TransE Training completed!"
 
-	elif [[ "$option" == 2 ]]; then
+	elif [[ "$option"==2 ]]; then
 		echo "Training TransR model, hang-tight ..."
 		# if [[ ! -e $dir ]]; then
 		# 	mkdir $dir
@@ -70,7 +70,7 @@ do
 		python3 transR.py -d $d -n $n
 		echo "TransR Training completed!"
 
-	elif [[ "$option" == 3 ]]; then
+	elif [[ "$option"==3 ]]; then
 		echo "Training TransH model, hang-tight ..."
 		# if [[ ! -e $dir ]]; then
 		# 	mkdir $dir
@@ -84,7 +84,7 @@ do
 		python3 transH.py -d $d -n $n
 		echo "TransH Training completed!"
 
-	elif [[ "$option" == 4 ]]; then
+	elif [[ "$option"==4 ]]; then
 		echo "Training distmult model, hang-tight ..."
 		cd src
 
@@ -95,18 +95,18 @@ do
 		fi
 		cd ..
 
-	elif [[ "$option" == 5 ]]; then
+	elif [[ "$option"==5 ]]; then
 		echo "Training complex model, hang-tight ..."
 		cd src
 
-		if  [["$d" == "FB15k"]]; then
+		if  [[ "$d"=="FB15k" ]]; then
 		python3 train.py --ent ${curr_pth}/main/dat/FB15k/train.entlist --rel ${curr_pth}/main/dat/FB15k/train.rellist --train ${curr_pth}/main/dat/FB15k/freebase_mtr100_mte100-train.txt --valid ${curr_pth}/main/dat/FB15k/freebase_mtr100_mte100-valid.txt --mode pairwise --method complex --epoch $n
 		else
 		python3 train.py --ent ${curr_pth}/main/dat/wordnet-mlj12/train.entlist --rel ${curr_pth}/main/dat/wordnet-mlj12/train.rellist --train ${curr_pth}/main/dat/wordnet-mlj12/wordnet-mlj12-train.txt --valid ${curr_pth}/main/dat/wordnet-mlj12/wordnet-mlj12-valid.txt --mode pairwise --method complex --epoch $n
 		fi
 		cd ..
 
-	elif [[ "$option" == 6 ]]; then
+	elif [[ "$option"==6 ]]; then
 		echo "NotImplementedError" 
 
 	fi
