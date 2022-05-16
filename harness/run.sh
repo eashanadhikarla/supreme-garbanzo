@@ -23,13 +23,18 @@ echo ""
 
 while [ "$option" != 7 ]
 do
-	echo "Enter the dataset for training {1 FB15k / 2 WN18}: "
-	read nd
-	if [[ "$nd"==1 ]]; then
-		d="FB15k"
-	else
-		d="WN18"
-	fi
+	echo "Enter the dataset (string as mentioned) for training {FB15k / WN18}: "
+	read d
+	# echo $nd
+	# if [[ "$nd"=="a" ]]
+	# then
+	# 	echo "Yahan hun mein"
+	# 	d="FB15k"
+	# else
+	# 	echo "idhar nahi hun"
+	# 	d="WN18"
+	# fi
+	echo "You have selected $d dataset for training."
 	
 	echo "Enter the Epochs for training {recommended: 300}: "
 	read n
