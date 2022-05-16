@@ -40,6 +40,7 @@ if [[ "$option" == 1 ]]; then
 	# 	echo "$dir already exists but is not a directory" 1>&2
 	# fi
 	mkdir -p results
+	mkdir -p results/$d
 	python3 transE.py -d $d -n $n
 
 elif [[ "$option" == 2 ]]; then
@@ -50,16 +51,18 @@ elif [[ "$option" == 2 ]]; then
 	# 	echo "$dir already exists but is not a directory" 1>&2
 	# fi
 	mkdir -p results
+	mkdir -p results/$d
 	python3 transR.py -d $d -n $n
 
 elif [[ "$option" == 3 ]]; then
 	echo "Training TransH model, hang-tight ..."
-	if [[ ! -e $dir ]]; then
-		mkdir $dir
-	elif [[ ! -d $dir ]]; then
-		echo "$dir already exists but is not a directory" 1>&2
-	fi
-
+	# if [[ ! -e $dir ]]; then
+	# 	mkdir $dir
+	# elif [[ ! -d $dir ]]; then
+	# 	echo "$dir already exists but is not a directory" 1>&2
+	# fi
+	mkdir -p results
+	mkdir -p results/$d
 	python3 transH.py -d $d -n $n
 
 elif [[ "$option" == 4 ]]; then
