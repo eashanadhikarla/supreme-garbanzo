@@ -15,6 +15,11 @@ echo "6. SimplE"
 echo "7. Exit"
 echo ""
 echo ""
+
+RED='\033[0;31m'
+NC='\033[0m' # No Color
+# printf "I ${RED}love${NC} Stack Overflow\n"
+
 read option
 echo "You have selected Option: $option"
 # read -s -p 'You have selected Option: '
@@ -47,7 +52,7 @@ do
 	curr_pth=$(echo $(pwd) | sed -e "s/\/[^\/]*$//")
 	echo $curr_pth
 
-	if [[ "$option"==1 ]]; then
+	if [[ "$option" -eq 1 ]] ; then
 		echo "Training TransE model, hang-tight ..."
 		# if [[ ! -e $dir ]]; then
 		# 	mkdir $dir
@@ -61,7 +66,7 @@ do
 		python3 transE.py -d $d -n $n
 		echo "TransE Training completed!"
 
-	elif [[ "$option"==2 ]]; then
+	elif [[ "$option" -eq 2 ]]; then
 		echo "Training TransR model, hang-tight ..."
 		# if [[ ! -e $dir ]]; then
 		# 	mkdir $dir
@@ -75,7 +80,7 @@ do
 		python3 transR.py -d $d -n $n
 		echo "TransR Training completed!"
 
-	elif [[ "$option"==3 ]]; then
+	elif [[ "$option" -eq 3 ]]; then
 		echo "Training TransH model, hang-tight ..."
 		# if [[ ! -e $dir ]]; then
 		# 	mkdir $dir
@@ -89,7 +94,7 @@ do
 		python3 transH.py -d $d -n $n
 		echo "TransH Training completed!"
 
-	elif [[ "$option"==4 ]]; then
+	elif [[ "$option" -eq 4 ]]; then
 		echo "Training distmult model, hang-tight ..."
 		cd src
 
@@ -100,7 +105,7 @@ do
 		fi
 		cd ..
 
-	elif [[ "$option"==5 ]]; then
+	elif [[ "$option" -eq 5 ]]; then
 		echo "Training complex model, hang-tight ..."
 		cd src
 
@@ -111,7 +116,7 @@ do
 		fi
 		cd ..
 
-	elif [[ "$option"==6 ]]; then
+	elif [[ "$option" -eq 6 ]]; then
 		echo "NotImplementedError" 
 
 	fi
