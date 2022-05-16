@@ -128,7 +128,8 @@ do
 			d="FB15K"
 		fi
 		python3 main.py -ne $n -dataset $d
-
+		cd .. # Back to main 
+		
 	fi
 
 	echo "[Model Training]"
