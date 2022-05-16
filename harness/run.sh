@@ -34,14 +34,15 @@ cd main
 while [ "$option" != 7 ]
 do
 	echo "Enter the dataset (string as mentioned) for training {FB15k / WN18}: "
-	read d
+	read nd
 	# echo $nd
-	# if [[ "$nd"=="a" ]]
-	# then
-	# 	d="FB15k"
-	# else
-	# 	d="WN18"
-	# fi
+	if [ "$nd" == "a" ]
+	then
+		d="FB15k"
+	elif [ "$nd" == "b" ]
+	then
+		d="WN18"
+	fi
 	echo "You have selected $d dataset for training."
 	
 	echo "Enter the Epochs for training {recommended: 300}: "
