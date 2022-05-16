@@ -61,7 +61,7 @@ do
 		mkdir -p result/$d
 		mkdir -p model
 		mkdir -p model/$d
-		python3.6 transE.py -d $d -n $n
+		python3 transE.py -d $d -n $n
 		echo "TransE Training completed!"
 
 	elif [[ "$option" -eq 2 ]]; then
@@ -75,7 +75,7 @@ do
 		mkdir -p result/$d
 		mkdir -p model
 		mkdir -p model/$d
-		python3.6 transR.py -d $d -n $n
+		python3 transR.py -d $d -n $n
 		echo "TransR Training completed!"
 
 	elif [[ "$option" -eq 3 ]]; then
@@ -89,7 +89,7 @@ do
 		mkdir -p result/$d
 		mkdir -p model
 		mkdir -p model/$d
-		python3.6 transH.py -d $d -n $n
+		python3 transH.py -d $d -n $n
 		echo "TransH Training completed!"
 
 	elif [[ "$option" -eq 4 ]]; then
@@ -97,9 +97,9 @@ do
 		cd src
 
 		if  [["$d" -eq "FB15k"]]; then
-		python3.6 train.py --ent ${curr_pth}/main/dat/FB15k/train.entlist --rel ${curr_pth}/main/dat/FB15k/train.rellist --train ${curr_pth}/main/dat/FB15k/freebase_mtr100_mte100-train.txt --valid ${curr_pth}/main/dat/FB15k/freebase_mtr100_mte100-valid.txt --mode pairwise --method distmult --epoch $n
+		python3 train.py --ent ${curr_pth}/main/dat/FB15k/train.entlist --rel ${curr_pth}/main/dat/FB15k/train.rellist --train ${curr_pth}/main/dat/FB15k/freebase_mtr100_mte100-train.txt --valid ${curr_pth}/main/dat/FB15k/freebase_mtr100_mte100-valid.txt --mode pairwise --method distmult --epoch $n
 		else
-		python3.6 train.py --ent ${curr_pth}/main/dat/wordnet-mlj12/train.entlist --rel ${curr_pth}/main/dat/wordnet-mlj12/train.rellist --train ${curr_pth}/main/dat/wordnet-mlj12/wordnet-mlj12-train.txt --valid ${curr_pth}/main/dat/wordnet-mlj12/wordnet-mlj12-valid.txt --mode pairwise --method distmult --epoch $n
+		python3 train.py --ent ${curr_pth}/main/dat/wordnet-mlj12/train.entlist --rel ${curr_pth}/main/dat/wordnet-mlj12/train.rellist --train ${curr_pth}/main/dat/wordnet-mlj12/wordnet-mlj12-train.txt --valid ${curr_pth}/main/dat/wordnet-mlj12/wordnet-mlj12-valid.txt --mode pairwise --method distmult --epoch $n
 		fi
 		cd ..
 
@@ -108,9 +108,9 @@ do
 		cd src
 
 		if  [[ "$d" -eq "FB15k" ]]; then
-		python3.6 train.py --ent ${curr_pth}/main/dat/FB15k/train.entlist --rel ${curr_pth}/main/dat/FB15k/train.rellist --train ${curr_pth}/main/dat/FB15k/freebase_mtr100_mte100-train.txt --valid ${curr_pth}/main/dat/FB15k/freebase_mtr100_mte100-valid.txt --mode pairwise --method complex --epoch $n
+		python3 train.py --ent ${curr_pth}/main/dat/FB15k/train.entlist --rel ${curr_pth}/main/dat/FB15k/train.rellist --train ${curr_pth}/main/dat/FB15k/freebase_mtr100_mte100-train.txt --valid ${curr_pth}/main/dat/FB15k/freebase_mtr100_mte100-valid.txt --mode pairwise --method complex --epoch $n
 		else
-		python3.6 train.py --ent ${curr_pth}/main/dat/wordnet-mlj12/train.entlist --rel ${curr_pth}/main/dat/wordnet-mlj12/train.rellist --train ${curr_pth}/main/dat/wordnet-mlj12/wordnet-mlj12-train.txt --valid ${curr_pth}/main/dat/wordnet-mlj12/wordnet-mlj12-valid.txt --mode pairwise --method complex --epoch $n
+		python3 train.py --ent ${curr_pth}/main/dat/wordnet-mlj12/train.entlist --rel ${curr_pth}/main/dat/wordnet-mlj12/train.rellist --train ${curr_pth}/main/dat/wordnet-mlj12/wordnet-mlj12-train.txt --valid ${curr_pth}/main/dat/wordnet-mlj12/wordnet-mlj12-valid.txt --mode pairwise --method complex --epoch $n
 		fi
 		cd ..
 
