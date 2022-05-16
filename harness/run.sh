@@ -123,13 +123,17 @@ do
 
 	elif [[ "$option" -eq 6 ]]; then
 		cd SimplE
+		
 		if [ "$d1" == "$d" ]
 		then
 			d="FB15K"
 		fi
+		
+		mkdir -p models
+		mkdir -p models/$d
 		python3 main.py -ne $n -dataset $d
 		cd .. # Back to main 
-		
+
 	fi
 
 	echo "[Model Training]"
