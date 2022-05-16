@@ -34,24 +34,42 @@ echo $curr_pth
 
 if [[ "$option" == 1 ]]; then
 	echo "Training TransE model, hang-tight ..."
-	python3.6 transE.py -d $d -n $n
+	if [[ ! -e $dir ]]; then
+		mkdir $dir
+	elif [[ ! -d $dir ]]; then
+		echo "$dir already exists but is not a directory" 1>&2
+	fi
+
+	python3 transE.py -d $d -n $n
 
 elif [[ "$option" == 2 ]]; then
 	echo "Training TransR model, hang-tight ..."
-	python3.6 transR.py -d $d -n $n
+	if [[ ! -e $dir ]]; then
+		mkdir $dir
+	elif [[ ! -d $dir ]]; then
+		echo "$dir already exists but is not a directory" 1>&2
+	fi
+
+	python3 transR.py -d $d -n $n
 
 elif [[ "$option" == 3 ]]; then
 	echo "Training TransH model, hang-tight ..."
-	python3.6 transH.py -d $d -n $n
+	if [[ ! -e $dir ]]; then
+		mkdir $dir
+	elif [[ ! -d $dir ]]; then
+		echo "$dir already exists but is not a directory" 1>&2
+	fi
+
+	python3 transH.py -d $d -n $n
 
 elif [[ "$option" == 4 ]]; then
 	echo "Training distmult model, hang-tight ..."
 	cd src
 
 	if  [["$d" == "FB15k"]]; then
-	python3.6 train.py --ent ${curr_pth}/main/dat/FB15k/train.entlist --rel ${curr_pth}/main/dat/FB15k/train.rellist --train ${curr_pth}/main/dat/FB15k/freebase_mtr100_mte100-train.txt --valid ${curr_pth}/main/dat/FB15k/freebase_mtr100_mte100-valid.txt --mode pairwise --method distmult --epoch $n
+	python3 train.py --ent ${curr_pth}/main/dat/FB15k/train.entlist --rel ${curr_pth}/main/dat/FB15k/train.rellist --train ${curr_pth}/main/dat/FB15k/freebase_mtr100_mte100-train.txt --valid ${curr_pth}/main/dat/FB15k/freebase_mtr100_mte100-valid.txt --mode pairwise --method distmult --epoch $n
 	else
-	python3.6 train.py --ent ${curr_pth}/main/dat/wordnet-mlj12/train.entlist --rel ${curr_pth}/main/dat/wordnet-mlj12/train.rellist --train ${curr_pth}/main/dat/wordnet-mlj12/wordnet-mlj12-train.txt --valid ${curr_pth}/main/dat/wordnet-mlj12/wordnet-mlj12-valid.txt --mode pairwise --method distmult --epoch $n
+	python3 train.py --ent ${curr_pth}/main/dat/wordnet-mlj12/train.entlist --rel ${curr_pth}/main/dat/wordnet-mlj12/train.rellist --train ${curr_pth}/main/dat/wordnet-mlj12/wordnet-mlj12-train.txt --valid ${curr_pth}/main/dat/wordnet-mlj12/wordnet-mlj12-valid.txt --mode pairwise --method distmult --epoch $n
 	fi
 	cd ..
 
@@ -60,9 +78,9 @@ elif [[ "$option" == 5 ]]; then
 	cd src
 
 	if  [["$d" == "FB15k"]]; then
-	python3.6 train.py --ent ${curr_pth}/main/dat/FB15k/train.entlist --rel ${curr_pth}/main/dat/FB15k/train.rellist --train ${curr_pth}/main/dat/FB15k/freebase_mtr100_mte100-train.txt --valid ${curr_pth}/main/dat/FB15k/freebase_mtr100_mte100-valid.txt --mode pairwise --method complex --epoch $n
+	python3 train.py --ent ${curr_pth}/main/dat/FB15k/train.entlist --rel ${curr_pth}/main/dat/FB15k/train.rellist --train ${curr_pth}/main/dat/FB15k/freebase_mtr100_mte100-train.txt --valid ${curr_pth}/main/dat/FB15k/freebase_mtr100_mte100-valid.txt --mode pairwise --method complex --epoch $n
 	else
-	python3.6 train.py --ent ${curr_pth}/main/dat/wordnet-mlj12/train.entlist --rel ${curr_pth}/main/dat/wordnet-mlj12/train.rellist --train ${curr_pth}/main/dat/wordnet-mlj12/wordnet-mlj12-train.txt --valid ${curr_pth}/main/dat/wordnet-mlj12/wordnet-mlj12-valid.txt --mode pairwise --method complex --epoch $n
+	python3 train.py --ent ${curr_pth}/main/dat/wordnet-mlj12/train.entlist --rel ${curr_pth}/main/dat/wordnet-mlj12/train.rellist --train ${curr_pth}/main/dat/wordnet-mlj12/wordnet-mlj12-train.txt --valid ${curr_pth}/main/dat/wordnet-mlj12/wordnet-mlj12-valid.txt --mode pairwise --method complex --epoch $n
 	fi
 	cd ..
 
