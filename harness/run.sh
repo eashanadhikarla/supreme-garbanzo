@@ -33,7 +33,7 @@ cd main
 
 while [ "$option" != 7 ]
 do
-	echo "Enter the dataset (string as mentioned) for training {FB15k / WN18}: "
+	echo "Enter the dataset (string as mentioned) for training {(a) FB15k / (b) WN18}: "
 	read nd
 	# echo $nd
 	if [ "$nd" == "a" ]
