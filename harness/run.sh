@@ -55,7 +55,7 @@ do
 	curr_pth=$(echo $(pwd) | sed -e "s/\/[^\/]*$//")
 	echo $curr_pth
 
-	if [[ "$option" -eq 1 ]] ; then
+	if [[ "$option" -eq 1 ]]; then
 		echo "Training TransE model, hang-tight ..."
 		# if [[ ! -e $dir ]]; then
 		# 	mkdir $dir
@@ -101,9 +101,9 @@ do
 		echo "Training distmult model, hang-tight ..."
 		cd src
 
-		if [[ "$d1" -eq "$d" ]]; then
+		if [[ "$d" == "$d1" ]]; then
 			python3 train.py --ent ${curr_pth}/main/dat/FB15k/train.entlist --rel ${curr_pth}/main/dat/FB15k/train.rellist --train ${curr_pth}/main/dat/FB15k/freebase_mtr100_mte100-train.txt --valid ${curr_pth}/main/dat/FB15k/freebase_mtr100_mte100-valid.txt --mode pairwise --method distmult --epoch $n
-		elif [[ "$d2" -eq "$d" ]]; then
+		elif [[ "$d" == "$d2" ]]; then
 			python3 train.py --ent ${curr_pth}/main/dat/wordnet-mlj12/train.entlist --rel ${curr_pth}/main/dat/wordnet-mlj12/train.rellist --train ${curr_pth}/main/dat/wordnet-mlj12/wordnet-mlj12-train.txt --valid ${curr_pth}/main/dat/wordnet-mlj12/wordnet-mlj12-valid.txt --mode pairwise --method distmult --epoch $n
 		fi
 		cd ..
