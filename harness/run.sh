@@ -33,10 +33,8 @@ do
 	# echo $nd
 	# if [[ "$nd"=="a" ]]
 	# then
-	# 	echo "Yahan hun mein"
 	# 	d="FB15k"
 	# else
-	# 	echo "idhar nahi hun"
 	# 	d="WN18"
 	# fi
 	echo "You have selected $d dataset for training."
