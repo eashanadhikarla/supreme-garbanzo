@@ -47,14 +47,23 @@ elif [[ "$option" == 3 ]]; then
 elif [[ "$option" == 4 ]]; then
 	echo "Training distmult model, hang-tight ..."
 	cd src
-	python3.6 train.py --ent ${curr_pth}/dat/wordnet-mlj12/train.entlist --rel ${curr_pth}/dat/wordnet-mlj12/train.rellist --train ${curr_pth}/dat/wordnet-mlj12/wordnet-mlj12-train.txt --valid ${curr_pth}/dat/wordnet-mlj12/wordnet-mlj12-valid.txt --mode pairwise --method distmult
+
+	if  [["$d" == "FB15k"]]; then
+	python3.6 train.py --ent ${curr_pth}/main/dat/FB15k/train.entlist --rel ${curr_pth}/main/dat/FB15k/train.rellist --train ${curr_pth}/main/dat/FB15k/freebase_mtr100_mte100-train.txt --valid ${curr_pth}/main/dat/FB15k/freebase_mtr100_mte100-valid.txt --mode pairwise --method distmult --epoch $n
+	else
+	python3.6 train.py --ent ${curr_pth}/main/dat/wordnet-mlj12/train.entlist --rel ${curr_pth}/main/dat/wordnet-mlj12/train.rellist --train ${curr_pth}/main/dat/wordnet-mlj12/wordnet-mlj12-train.txt --valid ${curr_pth}/main/dat/wordnet-mlj12/wordnet-mlj12-valid.txt --mode pairwise --method distmult --epoch $n
+	fi
 	cd ..
 
 elif [[ "$option" == 5 ]]; then
 	echo "Training complex model, hang-tight ..."
-	# curr_pth=$(pwd)
 	cd src
-	python3.6 src/train.py --ent $curr_pth/dat/wordnet-mlj12/train.entlist --rel $curr_pth/dat/wordnet-mlj12/train.rellist --train $curr_pth/dat/wordnet-mlj12/wordnet-mlj12-train.txt --valid $curr_pth/dat/wordnet-mlj12/wordnet-mlj12-valid.txt --mode pairwise --method complex
+
+	if  [["$d" == "FB15k"]]; then
+	python3.6 train.py --ent ${curr_pth}/main/dat/FB15k/train.entlist --rel ${curr_pth}/main/dat/FB15k/train.rellist --train ${curr_pth}/main/dat/FB15k/freebase_mtr100_mte100-train.txt --valid ${curr_pth}/main/dat/FB15k/freebase_mtr100_mte100-valid.txt --mode pairwise --method complex --epoch $n
+	else
+	python3.6 train.py --ent ${curr_pth}/main/dat/wordnet-mlj12/train.entlist --rel ${curr_pth}/main/dat/wordnet-mlj12/train.rellist --train ${curr_pth}/main/dat/wordnet-mlj12/wordnet-mlj12-train.txt --valid ${curr_pth}/main/dat/wordnet-mlj12/wordnet-mlj12-valid.txt --mode pairwise --method complex --epoch $n
+	fi
 	cd ..
 
 elif [[ "$option" == 6 ]]; then
