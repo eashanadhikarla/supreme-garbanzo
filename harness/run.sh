@@ -115,6 +115,24 @@ do
 		echo "NotImplementedError" 
 
 	fi
+
+	echo "[Model Training]"
+	echo "Choose an option:"
+	echo "1. TransE"
+	echo "2. TransR"
+	echo "3. TransH"
+	echo "4. Distmult"
+	echo "5. ComplEx"
+	echo "6. SimplE"
+	echo "7. Exit"
+	echo ""
+	echo ""
+	read option
+	echo "You have selected Option: $option"
+	# read -s -p 'You have selected Option: '
+	echo ""
+	echo ""
+
 done
 
 # Exit
