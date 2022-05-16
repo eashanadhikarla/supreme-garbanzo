@@ -43,7 +43,7 @@ do
 	then
 		d="WN18"
 	fi
-	
+
 	echo "You have selected $d dataset for training."
 	
 	echo "Enter the Epochs for training {recommended: 300}: "
@@ -122,7 +122,12 @@ do
 		cd ..
 
 	elif [[ "$option" -eq 6 ]]; then
-		echo "NotImplementedError" 
+		cd SimplE
+		if [ "$d1" == "$d" ]
+		then
+			d="FB15K"
+		fi
+		python3 main.py -ne $n -dataset $d
 
 	fi
 
