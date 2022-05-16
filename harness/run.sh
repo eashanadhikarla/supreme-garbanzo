@@ -28,10 +28,9 @@ echo ""
 cd main
 
 echo $(pwd)
-curr_pth=$(pwd)
-echo ${curr_pth::-3}
-
-echo " "
+curr_pth=$(echo $(pwd) | sed -e "s/\/[^\/]*$//")
+# cp=$curr_pth | sed -e "s/\/[^\/]*$//"
+echo $curr_pth
 
 if [[ "$option" == 1 ]]; then
 	echo "Training TransE model, hang-tight ..."
@@ -48,7 +47,7 @@ elif [[ "$option" == 3 ]]; then
 elif [[ "$option" == 4 ]]; then
 	echo "Training distmult model, hang-tight ..."
 	cd src
-	python3.6 train.py --ent ${curr_pth::-3}/dat/wordnet-mlj12/train.entlist --rel ${curr_pth::-3}/dat/wordnet-mlj12/train.rellist --train ${curr_pth::-3}/dat/wordnet-mlj12/wordnet-mlj12-train.txt --valid ${curr_pth::-3}/dat/wordnet-mlj12/wordnet-mlj12-valid.txt --mode pairwise --method distmult
+	python3.6 train.py --ent ${curr_pth}/dat/wordnet-mlj12/train.entlist --rel ${curr_pth}/dat/wordnet-mlj12/train.rellist --train ${curr_pth}/dat/wordnet-mlj12/wordnet-mlj12-train.txt --valid ${curr_pth}/dat/wordnet-mlj12/wordnet-mlj12-valid.txt --mode pairwise --method distmult
 	cd ..
 
 elif [[ "$option" == 5 ]]; then

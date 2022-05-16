@@ -1,0 +1,23 @@
+2022-05-16 10:21:45,832 INFO Arguments...
+2022-05-16 10:21:45,832 INFO      batch -----> 128
+2022-05-16 10:21:45,832 INFO   cp_ratio -----> 0.5
+2022-05-16 10:21:45,832 INFO        dim -----> 200
+2022-05-16 10:21:45,832 INFO        ent -----> /Users/eashan22/Desktop/KRR/Final-Project/supreme-garbanzo/harness/dat/wordnet-mlj12/train.entlist
+2022-05-16 10:21:45,832 INFO      epoch -----> 300
+2022-05-16 10:21:45,832 INFO   filtered -----> False
+2022-05-16 10:21:45,833 INFO   gradclip -----> 5
+2022-05-16 10:21:45,833 INFO   graphall -----> None
+2022-05-16 10:21:45,833 INFO     l2_reg -----> 0.0001
+2022-05-16 10:21:45,833 INFO        log -----> /Users/eashan22/Desktop/KRR/Final-Project/supreme-garbanzo/harness/main/src/20220516_10:21
+2022-05-16 10:21:45,833 INFO         lr -----> 0.05
+2022-05-16 10:21:45,833 INFO     margin -----> 1.0
+2022-05-16 10:21:45,833 INFO     method -----> distmult
+2022-05-16 10:21:45,833 INFO     metric -----> mrr
+2022-05-16 10:21:45,833 INFO       mode -----> pairwise
+2022-05-16 10:21:45,833 INFO      nbest -----> None
+2022-05-16 10:21:45,833 INFO   negative -----> 10
+2022-05-16 10:21:45,833 INFO        opt -----> adagrad
+2022-05-16 10:21:45,833 INFO        rel -----> /Users/eashan22/Desktop/KRR/Final-Project/supreme-garbanzo/harness/dat/wordnet-mlj12/train.rellist
+2022-05-16 10:21:45,833 INFO  save_step -----> 100
+2022-05-16 10:21:45,833 INFO      train -----> /Users/eashan22/Desktop/KRR/Final-Project/supreme-garbanzo/harness/dat/wordnet-mlj12/wordnet-mlj12-train.txt
+2022-05-16 10:21:45,833 INFO      valid -----> /Users/eashan22/Desktop/KRR/Final-Project/supreme-garbanzo/harness/dat/wordnet-mlj12/wordnet-mlj12-valid.txt
