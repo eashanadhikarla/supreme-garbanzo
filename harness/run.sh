@@ -27,7 +27,7 @@ do
 	read nd
 	if [[ "$nd"==1 ]]; then
 		d="FB15k"
-	elif [[ "$nd"==2 ]]; then
+	else
 		d="WN18"
 	fi
 	
