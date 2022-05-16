@@ -21,14 +21,14 @@ NC='\033[0m' # No Color
 # printf "I ${RED}love${NC} Stack Overflow\n"
 
 read option
-echo "You have selected Option: ${RED}$option${NC}"
+echo "You have selected Option: $option"
 # read -s -p 'You have selected Option: '
 echo ""
 echo ""
 
 while [ "$option" != 7 ]
 do
-	echo "Enter the dataset (string as mentioned) for training ${RED}{FB15k / WN18}${NC}: "
+	echo "Enter the dataset (string as mentioned) for training {FB15k / WN18}: "
 	read d
 	# echo $nd
 	# if [[ "$nd"=="a" ]]
@@ -39,9 +39,9 @@ do
 	# 	echo "idhar nahi hun"
 	# 	d="WN18"
 	# fi
-	echo "You have selected ${RED}$d${NC} dataset for training."
+	echo "You have selected $d dataset for training."
 	
-	echo "Enter the Epochs for training ${RED}{recommended: 300}${NC}: "
+	echo "Enter the Epochs for training {recommended: 300}: "
 	read n
 	echo ""
 	echo ""
