@@ -34,15 +34,16 @@ cd main
 while [ "$option" != 7 ]
 do
 	echo "Enter the dataset (string as mentioned) for training {(a) FB15k / (b) WN18}: "
-	read d
-	# # echo $nd
-	# if [ "$nd" == "a" ]
-	# then
-	# 	d="FB15k"
-	# elif [ "$nd" == "b" ]
-	# then
-	# 	d="WN18"
-	# fi
+	read nd
+	# echo $nd
+	if [ "$nd" == "a" ]
+	then
+		d="FB15k"
+	elif [ "$nd" == "b" ]
+	then
+		d="WN18"
+	fi
+	
 	echo "You have selected $d dataset for training."
 	
 	echo "Enter the Epochs for training {recommended: 300}: "
@@ -113,9 +114,9 @@ do
 		echo "Training complex model, hang-tight ..."
 		cd src
 
-		if [ "$d1" -eq "$d" ]; then
+		if [ "$d1" == "$d" ]; then
 			python3 train.py --ent ${curr_pth}/main/dat/FB15k/train.entlist --rel ${curr_pth}/main/dat/FB15k/train.rellist --train ${curr_pth}/main/dat/FB15k/freebase_mtr100_mte100-train.txt --valid ${curr_pth}/main/dat/FB15k/freebase_mtr100_mte100-valid.txt --mode pairwise --method complex --epoch $n
-		else
+		elif [ "$d" == "$d2" ]; then
 			python3 train.py --ent ${curr_pth}/main/dat/wordnet-mlj12/train.entlist --rel ${curr_pth}/main/dat/wordnet-mlj12/train.rellist --train ${curr_pth}/main/dat/wordnet-mlj12/wordnet-mlj12-train.txt --valid ${curr_pth}/main/dat/wordnet-mlj12/wordnet-mlj12-valid.txt --mode pairwise --method complex --epoch $n
 		fi
 		cd ..
