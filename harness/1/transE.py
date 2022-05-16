@@ -25,15 +25,7 @@ import model
 
 # from hyperboard import Agent
 
-USE_CUDA = False # torch.cuda.is_available()
-
-if USE_CUDA:
-    longTensor = torch.cuda.LongTensor
-    floatTensor = torch.cuda.FloatTensor
-
-else:
-    longTensor = torch.LongTensor
-    floatTensor = torch.FloatTensor
+USE_CUDA = torch.cuda.is_available()
 
 """
 The meaning of parameters:
@@ -62,7 +54,7 @@ class Config(object):
         self.L1_flag = True
         self.embedding_size = 100
         self.num_batches = 100
-        self.train_times = 5 # 1000
+        self.train_times = 1000
         self.margin = 1.0
         self.filter = True
         self.momentum = 0.9
@@ -186,27 +178,26 @@ if __name__ == "__main__":
     if USE_CUDA:
         model.cuda()
         loss_function.cuda()
+        longTensor = torch.cuda.LongTensor
+        floatTensor = torch.cuda.FloatTensor
+
+    else:
+        longTensor = torch.LongTensor
+        floatTensor = torch.FloatTensor
 
     optimizer = config.optimizer(model.parameters(), lr=config.learning_rate)
     margin = autograd.Variable(floatTensor([config.margin]))
 
     start_time = time.time()
-
-    filename = '_'.join(
-        ['l', str(args.learning_rate),
-         'es', str(args.early_stopping_round),
-         'L', str(args.L1_flag),
-         'em', str(args.embedding_size),
-         'nb', str(args.num_batches),
-         'n', str(args.train_times),
-         'm', str(args.margin),
-         'f', str(args.filter),
-         'mo', str(args.momentum),
-         's', str(args.seed),
-         'op', str(args.optimizer),
-         'lo', str(args.loss_type),]) + '_TransE.ckpt'
-
+    filename = f'{args.dataset}_TransE.ckpt'
     trainBatchList = getBatchList(trainList, config.num_batches)
+    
+    headings = f'Epoch,Train_Loss,Valid_Loss,Hit_10,MeanRank'
+    file_path = fr'./result/{args.dataset}/{filename}_train_log.csv'
+    f = open(file_path, 'a+')
+    f.write(headings)
+    f.write('\n')
+    f.close()
 
     for epoch in range(config.train_times):
         total_loss = floatTensor([0.0])
@@ -247,7 +238,52 @@ if __name__ == "__main__":
             total_loss += losses.data
 
         # agent.append(trainCurve, epoch, total_loss[0])
+        
+        # Validate
+        if config.filter == True:
+            pos_h_batch, pos_t_batch, pos_r_batch, neg_h_batch, neg_t_batch, neg_r_batch = getBatch_filter_random(validList, 
+                config.batch_size, config.entity_total, tripleDict)
+        else:
+            pos_h_batch, pos_t_batch, pos_r_batch, neg_h_batch, neg_t_batch, neg_r_batch = getBatch_raw_random(validList, 
+                config.batch_size, config.entity_total)
+        pos_h_batch = autograd.Variable(longTensor(pos_h_batch))
+        pos_t_batch = autograd.Variable(longTensor(pos_t_batch))
+        pos_r_batch = autograd.Variable(longTensor(pos_r_batch))
+        neg_h_batch = autograd.Variable(longTensor(neg_h_batch))
+        neg_t_batch = autograd.Variable(longTensor(neg_t_batch))
+        neg_r_batch = autograd.Variable(longTensor(neg_r_batch))
 
+        pos, neg = model(pos_h_batch, pos_t_batch, pos_r_batch, neg_h_batch, neg_t_batch, neg_r_batch)
+
+        if args.loss_type == 0:
+            losses = loss_function(pos, neg, margin)
+        else:
+            losses = loss_function(pos, neg)
+        ent_embeddings = model.ent_embeddings(torch.cat([pos_h_batch, pos_t_batch, neg_h_batch, neg_t_batch]))
+        rel_embeddings = model.rel_embeddings(torch.cat([pos_r_batch, neg_r_batch]))
+        losses = losses + loss.normLoss(ent_embeddings) + loss.normLoss(rel_embeddings)
+        # print("Valid batch loss: %d %f" % (epoch, losses.data[0]))
+        #print("Valid batch loss: %d %f" % (epoch, losses))
+
+        # agent.append(validCurve, epoch, losses.data[0])
+        
+        ent_embeddings = model.ent_embeddings.weight.data.cpu().numpy()
+        rel_embeddings = model.rel_embeddings.weight.data.cpu().numpy()
+        L1_flag = model.L1_flag
+        filter = model.filter	
+        hit10, now_meanrank = evaluation_transE(validList, tripleDict, ent_embeddings, rel_embeddings, 
+            L1_flag, filter, config.batch_size, num_processes=args.num_processes)
+        if epoch == 0:
+            best_meanrank = now_meanrank
+        
+        # Save to file
+        to_file = f'{epoch+1},{total_loss.item()},{losses},{hit10},{now_meanrank}'
+        file_path = fr'./result/{args.dataset}/{filename}_train_log.csv'
+        f = open(file_path, 'a+')
+        f.write(to_file)
+        f.write('\n')
+        f.close()
+        '''
         if epoch % 10 == 0:
             now_time = time.time()
             print(now_time - start_time)
@@ -280,15 +316,17 @@ if __name__ == "__main__":
             print("Valid batch loss: %d %f" % (epoch, losses))
 
             # agent.append(validCurve, epoch, losses.data[0])
-
+        '''
         if config.early_stopping_round > 0:
             if epoch == 0:
+                '''
                 ent_embeddings = model.ent_embeddings.weight.data.cpu().numpy()
                 rel_embeddings = model.rel_embeddings.weight.data.cpu().numpy()
                 L1_flag = model.L1_flag
                 filter = model.filter	
                 hit10, best_meanrank = evaluation_transE(validList, tripleDict, ent_embeddings, rel_embeddings, 
                     L1_flag, filter, config.batch_size, num_processes=args.num_processes)
+                '''
                 # agent.append(hit10Curve, epoch, hit10)
                 # agent.append(meanrankCurve, epoch, best_meanrank)
                 torch.save(model, os.path.join('./model/' + args.dataset, filename))	
@@ -300,12 +338,14 @@ if __name__ == "__main__":
 
             # Evaluate on validation set for every 5 epochs
             elif epoch % 5 == 0:
+                '''
                 ent_embeddings = model.ent_embeddings.weight.data.cpu().numpy()
                 rel_embeddings = model.rel_embeddings.weight.data.cpu().numpy()
                 L1_flag = model.L1_flag
                 filter = model.filter
                 hit10, now_meanrank = evaluation_transE(validList, tripleDict, ent_embeddings, rel_embeddings, 
                     L1_flag, filter, config.batch_size, num_processes=args.num_processes)
+                '''
                 # agent.append(hit10Curve, epoch, hit10)
                 # agent.append(meanrankCurve, epoch, now_meanrank)
                 if now_meanrank < best_meanrank:
@@ -329,10 +369,10 @@ if __name__ == "__main__":
             torch.save(model, os.path.join('./model/' + args.dataset, filename))
 
     testTotal, testList, testDict = loadTriple('./data/' + args.dataset, 'test2id.txt')
-    oneToOneTotal, oneToOneList, oneToOneDict = loadTriple('./data/' + args.dataset, 'one_to_one.txt')
-    oneToManyTotal, oneToManyList, oneToManyDict = loadTriple('./data/' + args.dataset, 'one_to_many.txt')
-    manyToOneTotal, manyToOneList, manyToOneDict = loadTriple('./data/' + args.dataset, 'many_to_one.txt')
-    manyToManyTotal, manyToManyList, manyToManyDict = loadTriple('./data/' + args.dataset, 'many_to_many.txt')
+    oneToOneTotal, oneToOneList, oneToOneDict = loadTriple('./data/' + args.dataset, 'one_to_one_test.txt')
+    oneToManyTotal, oneToManyList, oneToManyDict = loadTriple('./data/' + args.dataset, 'one_to_many_test.txt')
+    manyToOneTotal, manyToOneList, manyToOneDict = loadTriple('./data/' + args.dataset, 'many_to_one_test.txt')
+    manyToManyTotal, manyToManyList, manyToManyDict = loadTriple('./data/' + args.dataset, 'many_to_many_test.txt')
 
     ent_embeddings = model.ent_embeddings.weight.data.cpu().numpy()
     rel_embeddings = model.rel_embeddings.weight.data.cpu().numpy()
@@ -351,21 +391,16 @@ if __name__ == "__main__":
     hit10ManyToOneTail, meanrankManyToOneTail = evaluation_transE(manyToOneList, tripleDict, ent_embeddings, rel_embeddings, L1_flag, filter, head=2)
     hit10ManyToManyTail, meanrankManyToManyTail = evaluation_transE(manyToManyList, tripleDict, ent_embeddings, rel_embeddings, L1_flag, filter, head=2)
 
-    writeList = [filename, 
-        'testSet', '%.6f' % hit10Test, '%.6f' % meanrankTest, 
-        'one_to_one_head', '%.6f' % hit10OneToOneHead, '%.6f' % meanrankOneToOneHead, 
-        'one_to_many_head', '%.6f' % hit10OneToManyHead, '%.6f' % meanrankOneToManyHead, 
-        'many_to_one_head', '%.6f' % hit10ManyToOneHead, '%.6f' % meanrankManyToOneHead, 
-        'many_to_many_head', '%.6f' % hit10ManyToManyHead, '%.6f' % meanrankManyToManyHead,
-        'one_to_one_tail', '%.6f' % hit10OneToOneTail, '%.6f' % meanrankOneToOneTail, 
-        'one_to_many_tail', '%.6f' % hit10OneToManyTail, '%.6f' % meanrankOneToManyTail, 
-        'many_to_one_tail', '%.6f' % hit10ManyToOneTail, '%.6f' % meanrankManyToOneTail, 
-        'many_to_many_tail', '%.6f' % hit10ManyToManyTail, '%.6f' % meanrankManyToManyTail,]
-
     # Write the result into file
-    with open(os.path.join('./result/', args.dataset + '.txt'), 'a') as fw:
-        fw.write('\t'.join(writeList) + '\n')
-
+    headings = f'Seed,Learning_Rate,Early_Stopping_Round,L1_Flag,Embedding_Size,Num_Batches,Num_Epochs,Margin,Filter,Momentum,Optimizer,Loss_Type,,testSet__hit10,testSet__meanrank,one_to_one_head__hit10,one_to_one_head__meanrank,one_to_many_head__hit10,one_to_many_head__meanrank,many_to_one_head__hit10,many_to_one_head__meanrank,many_to_many_head__hit10,many_to_many_head__meanrank,one_to_one_tail__hit10,one_to_one_tail__meanrank,one_to_many_tail__hit10,one_to_many_tail__meanrank,many_to_one_tail__hit10,many_to_one_tail__meanrank,many_to_many_tail__hit10,many_to_many_tail__meanrank'
+    to_file = f"{args.seed},{args.learning_rate},{args.early_stopping_round},{args.L1_flag},{args.embedding_size},{args.num_batches},{args.train_times},{args.margin},{args.filter},{args.momentum},{args.optimizer},{args.loss_type},,{hit10Test},{meanrankTest},{hit10OneToOneHead},{meanrankOneToOneHead},{hit10OneToManyHead},{meanrankOneToManyHead},{hit10ManyToOneHead},{meanrankManyToOneHead},{hit10ManyToManyHead},{meanrankManyToManyHead},{hit10OneToOneTail},{meanrankOneToOneTail},{hit10OneToManyTail},{meanrankOneToManyTail},{hit10ManyToOneTail},{meanrankManyToOneTail},{hit10ManyToManyTail},{meanrankManyToManyTail}"
+    file_path = fr'./result/{args.dataset}/{filename}.csv'
+    f = open(file_path, 'a+')
+    f.write(headings)
+    f.write('\n')
+    f.write(to_file)
+    f.write('\n')
+    f.close()
 
 # import os
 

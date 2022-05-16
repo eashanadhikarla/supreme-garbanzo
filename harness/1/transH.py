@@ -290,12 +290,13 @@ if __name__ == "__main__":
         f.write(to_file)
         f.write('\n')
         f.close()
-
-        if epoch % 10 == 0:
+        
+        '''
+        if epoch# % 10 == 0:
             now_time = time.time()
             print(now_time - start_time)
             print("Train total loss: %d %f" % (epoch, total_loss[0]))
-
+        '''
         '''
         if epoch % 10 == 0:
             if config.filter == True:

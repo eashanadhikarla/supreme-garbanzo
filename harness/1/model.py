@@ -9,6 +9,8 @@ import os
 import math
 import pickle
 
+import numpy as np
+
 import torch
 import torch.autograd as autograd
 import torch.nn as nn
@@ -204,12 +206,13 @@ class TransRPretrainModel(nn.Module):
         self.relation_total = config.relation_total
         self.batch_size = config.batch_size
 
-        with open('./transE_%s_%s_best.pkl' % (config.dataset, str(config.ent_embedding_size)), 'rb') as fr:
-            ent_embeddings_list = pickle.load(fr)
-            rel_embeddings_list = pickle.load(fr)
+        #with open('./transE_%s_%s_best.pkl' % (config.dataset, str(config.ent_embedding_size)), 'rb') as fr:
+        #with open('%s_TransE_pretrained_100.pkl' % (config.dataset), 'rb') as fr:
+        ent_embeddings_list = torch.Tensor(np.load(f'entity2vec_{config.dataset}.npy')) #pickle.load(fr)
+        rel_embeddings_list = torch.Tensor(np.load(f'relation2vec_{config.dataset}.npy')) #pickle.load(fr)
 
-        ent_weight = floatTensor(ent_embeddings_list)
-        rel_weight = floatTensor(rel_embeddings_list)
+        ent_weight = floatTensor(ent_embeddings_list.cuda())
+        rel_weight = floatTensor(rel_embeddings_list.cuda())
         proj_weight = floatTensor(self.rel_embedding_size, self.ent_embedding_size)
         nn.init.eye(proj_weight)
         proj_weight = proj_weight.view(-1).expand(self.relation_total, -1)
@@ -266,7 +269,8 @@ class TransDPretrainModelSameSize(nn.Module):
         self.relation_total = config.relation_total
         self.batch_size = config.batch_size
 
-        with open('./transE_%s_%s_best.pkl' % (config.dataset, str(config.embedding_size)), 'rb') as fr:
+        #with open('./transE_%s_%s_best.pkl' % (config.dataset, str(config.ent_embedding_size)), 'rb') as fr:
+        with open('%s_TransE_pretrained_100.pkl' % (config.dataset), 'rb') as fr:
             ent_embeddings_list = pickle.load(fr)
             rel_embeddings_list = pickle.load(fr)
 
