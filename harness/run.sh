@@ -21,9 +21,9 @@ echo "You have selected Option: $option"
 echo ""
 echo ""
 
-while ["$option" != 7]
+while ["$option" != 7];
 do
-	echo "Enter the dataset for training {1. FB15k / 2. WN18}: "
+	echo "Enter the dataset for training {1 FB15k / 2 WN18}: "
 	read nd
 	if [["$nd" == 1]]; then
 		d="FB15k"
