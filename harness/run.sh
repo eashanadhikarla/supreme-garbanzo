@@ -41,6 +41,8 @@ if [[ "$option" == 1 ]]; then
 	# fi
 	mkdir -p result
 	mkdir -p result/$d
+	mkdir -p model
+	mkdir -p model/$d
 	python3 transE.py -d $d -n $n
 
 elif [[ "$option" == 2 ]]; then
@@ -52,6 +54,8 @@ elif [[ "$option" == 2 ]]; then
 	# fi
 	mkdir -p result
 	mkdir -p result/$d
+	mkdir -p model
+	mkdir -p model/$d
 	python3 transR.py -d $d -n $n
 
 elif [[ "$option" == 3 ]]; then
@@ -63,6 +67,8 @@ elif [[ "$option" == 3 ]]; then
 	# fi
 	mkdir -p result
 	mkdir -p result/$d
+	mkdir -p model
+	mkdir -p model/$d
 	python3 transH.py -d $d -n $n
 
 elif [[ "$option" == 4 ]]; then
