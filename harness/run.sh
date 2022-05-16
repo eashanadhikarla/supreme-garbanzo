@@ -19,7 +19,9 @@ echo ""
 RED='\033[0;31m'
 NC='\033[0m' # No Color
 # printf "I ${RED}love${NC} Stack Overflow\n"
+
 d1="FB15k"
+d2="WN18"
 
 read option
 echo "You have selected Option: $option"
@@ -101,7 +103,7 @@ do
 
 		if [[ "$d1" -eq "$d" ]]; then
 			python3 train.py --ent ${curr_pth}/main/dat/FB15k/train.entlist --rel ${curr_pth}/main/dat/FB15k/train.rellist --train ${curr_pth}/main/dat/FB15k/freebase_mtr100_mte100-train.txt --valid ${curr_pth}/main/dat/FB15k/freebase_mtr100_mte100-valid.txt --mode pairwise --method distmult --epoch $n
-		else
+		elif [[ "$d2" -eq "$d" ]]; then
 			python3 train.py --ent ${curr_pth}/main/dat/wordnet-mlj12/train.entlist --rel ${curr_pth}/main/dat/wordnet-mlj12/train.rellist --train ${curr_pth}/main/dat/wordnet-mlj12/wordnet-mlj12-train.txt --valid ${curr_pth}/main/dat/wordnet-mlj12/wordnet-mlj12-valid.txt --mode pairwise --method distmult --epoch $n
 		fi
 		cd ..
